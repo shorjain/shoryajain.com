@@ -8,7 +8,8 @@ const EMAIL = "shorjain@gmail.com";
 
 const SKILLS = [
   { group: "Languages", items: ["Python", "Java", "JavaScript", "HTML / CSS", "SQL"] },
-  { group: "ML & Data", items: ["PyTorch", "Pandas", "NumPy", "SciPy", "Matplotlib", "RAG", "Sentiment analysis", "Audio feature extraction", "Time-series forecasting"] },
+  { group: "AI & Agents", items: ["LLM agents", "Tool use", "RAG", "Grounding & citations", "Prompt engineering"] },
+  { group: "ML & Data", items: ["PyTorch", "Pandas", "NumPy", "SciPy", "Matplotlib", "Sentiment analysis", "Audio feature extraction", "Time-series forecasting"] },
   { group: "AI Platforms & APIs", items: ["Snowflake Cortex AI", "Google Gemini API", "Grok / xAI", "Polymarket API", "Kalshi API"] },
   { group: "Web & Cloud", items: ["React", "Vite", "FastAPI", "MongoDB", "Cloudflare Workers", "Render", "Git / GitHub"] },
   { group: "Math", items: ["Statistics", "Probability", "Data Structures", "Linear Algebra", "Data Analysis"] },
@@ -17,32 +18,10 @@ const SKILLS = [
 
 const PROJECTS = [
   {
-    id: "surroundsound",
-    title: "SurroundSound",
-    meta: "2026 / BUILDER · TECH@NYU TECH TREKS",
-    kind: "Audio ML · Web app",
-    tag: "A room full of phones, synced into one surround sound system",
-    hook: "Every phone in the room becomes a speaker. The app works out where each one is, then plays the right channel on each.",
-    desc: [
-      "Measures the distances between phones to build a shared map of the room.",
-      "Uses ML to fine-tune the audio each device records, so calibration and room mapping are more accurate.",
-      "Built with React, FastAPI, PyTorch and MongoDB, deployed on Render.",
-    ],
-    metrics: [
-      { k: "Frontend", v: "React + Vite" },
-      { k: "Backend", v: "FastAPI" },
-      { k: "ML", v: "PyTorch", s: "cleans up per-device calibration audio" },
-      { k: "Deploy", v: "Render" },
-    ],
-    tags: ["JavaScript", "Python", "PyTorch", "MongoDB"],
-    links: [{ label: "Source", href: "https://github.com/shorjain/surroundsoundtechtreks" }],
-    status: "In progress",
-  },
-  {
     id: "cryptoshi",
     title: "Cryptoshi",
     meta: "OCT 2026 / MLH · SHIPYARD BUILDATHON",
-    kind: "Award winner",
+    kind: "RAG · Award winner",
     tag: "Crypto trading signals from prediction markets and the crowd",
     hook: "Won Best Use of Snowflake Cortex AI at the Tech@NYU Buildathon, built and deployed by two people during the event.",
     desc: [
@@ -58,8 +37,27 @@ const PROJECTS = [
     ],
     tags: ["Snowflake Cortex AI", "RAG", "Python", "Prediction markets"],
     links: [],
-  },
-  {
+  },  {
+    id: "receipts",
+    title: "receipts",
+    meta: "2026 / AUTHOR",
+    kind: "LLM agent · Sports markets",
+    tag: "Why the NFL line moved, and which insider called it first",
+    hook: "Watches betting markets every minute. When the odds jump, it finds the reporter post that most likely caused it and explains the move in plain English.",
+    desc: [
+      "Tracks win odds, spreads and totals from Kalshi, Polymarket and sportsbooks, and flags moves seen on two markets at once as confirmed.",
+      "Scores ~70 NFL reporters by checking every claim they make against official stats after the game.",
+      "Every explanation passes a grounding check: each cause must cite a post published before the move, or it says “no clear cause”.",
+    ],
+    metrics: [
+      { k: "Markets", v: "Kalshi · Polymarket", s: "plus sportsbooks" },
+      { k: "Reporters", v: "~70 tracked" },
+      { k: "Polling", v: "Every minute" },
+      { k: "Grounding", v: "Cite or abstain" },
+    ],
+    tags: ["Python", "LLMs", "Grok x_search", "nflverse"],
+    links: [{ label: "Source", href: "https://github.com/shorjain/receipts" }],
+  },  {
     id: "foreseeer",
     title: "Foreseeer",
     meta: "JUL 2026 / AUTHOR",
@@ -83,65 +81,31 @@ const PROJECTS = [
       { label: "Visit foreseeer.com", href: "https://www.foreseeer.com" },
       { label: "Source", href: "https://github.com/shorjain/foreseeer" },
     ],
-  },
-  {
-    id: "debate",
-    title: "Debate Outcome Predictor",
-    meta: "OCT 2026 – PRESENT / GOOGLE DEVELOPERS GROUP @ NYU",
-    kind: "Audio ML · Team of 5",
-    tag: "Predicting the strongest speaker as a debate unfolds",
-    hook: "A live demo that updates each debater’s chance of winning while they’re still talking.",
+  },  {
+    id: "surroundsound",
+    title: "SurroundSound",
+    meta: "2026 / BUILDER · TECH@NYU TECH TREKS",
+    kind: "Audio ML · Web app",
+    tag: "A room full of phones, synced into one surround sound system",
+    hook: "Every phone in the room becomes a speaker. The app works out where each one is, then plays the right channel on each.",
     desc: [
-      "Building the audio feature-extraction module that turns .wav debate recordings into speech features for the model.",
-      "Working with a 5-person team toward a live demo that updates win probabilities in real time.",
+      "Measures the distances between phones to build a shared map of the room.",
+      "Uses ML to fine-tune the audio each device records, so calibration and room mapping are more accurate.",
+      "Built with React, FastAPI, PyTorch and MongoDB, deployed on Render.",
     ],
     metrics: [
-      { k: "Input", v: ".wav recordings" },
-      { k: "My part", v: "Feature extraction", s: "speech features for the model" },
-      { k: "Team", v: "5 people" },
-      { k: "Goal", v: "Live win odds" },
+      { k: "Frontend", v: "React + Vite" },
+      { k: "Backend", v: "FastAPI" },
+      { k: "ML", v: "PyTorch", s: "cleans up per-device calibration audio" },
+      { k: "Deploy", v: "Render" },
     ],
-    tags: ["Python", "Audio ML", "Signal processing"],
-    links: [],
+    tags: ["JavaScript", "Python", "PyTorch", "MongoDB"],
+    links: [{ label: "Source", href: "https://github.com/shorjain/surroundsoundtechtreks" }],
     status: "In progress",
   },
-  {
-    id: "receipts",
-    title: "receipts",
-    meta: "2026 / AUTHOR",
-    kind: "LLM · Sports markets",
-    tag: "Why the NFL line moved, and which insider called it first",
-    hook: "Watches betting markets every minute. When the odds jump, it finds the reporter post that most likely caused it and explains the move in plain English.",
-    desc: [
-      "Tracks win odds, spreads and totals from Kalshi, Polymarket and sportsbooks, and flags moves seen on two markets at once as confirmed.",
-      "Scores ~70 NFL reporters by checking every claim they make against official stats after the game.",
-      "Every explanation passes a grounding check: each cause must cite a post published before the move, or it says “no clear cause”.",
-    ],
-    metrics: [
-      { k: "Markets", v: "Kalshi · Polymarket", s: "plus sportsbooks" },
-      { k: "Reporters", v: "~70 tracked" },
-      { k: "Polling", v: "Every minute" },
-      { k: "Grounding", v: "Cite or abstain" },
-    ],
-    tags: ["Python", "LLMs", "Grok x_search", "nflverse"],
-    links: [{ label: "Source", href: "https://github.com/shorjain/receipts" }],
-  },
-  {
-    id: "tm-bot",
-    title: "TM Trading Bot",
-    meta: "2026 / AUTHOR",
-    kind: "Systematic trading",
-    tag: "A systematic bot for tokenized stocks",
-    hook: "A rules-based trading bot built to trade tokenized stocks on True Markets’ platform.",
-    desc: ["Systematic strategy logic for tokenized equities on True Markets."],
-    metrics: [
-      { k: "Venue", v: "True Markets" },
-      { k: "Assets", v: "Tokenized stocks" },
-    ],
-    tags: ["Python", "Trading"],
-    links: [{ label: "Source", href: "https://github.com/shorjain/TM-Trading-Bot" }],
-    status: "In progress",
-  },
+
+
+
 ];
 
 const EXPERIENCE = [
@@ -166,13 +130,6 @@ const EXPERIENCE = [
     points: [
       "Selected for an onsite team program at J&J studying patient challenges.",
       "Built a digital app concept with the team and presented it to J&J executives.",
-    ],
-  },
-  {
-    org: "Jain Academic Bowl (JAINA)", role: "Captain", where: "New Jersey", when: "SEP 2023 – JUL 2025",
-    points: [
-      "Led a 32-person team, running weekly practices and building study materials across logical and analytical subjects.",
-      "Captained the New Jersey chapter to its first international championship win in 14 years.",
     ],
   },
 ];
@@ -468,7 +425,7 @@ $("#contactForm").addEventListener("submit", (e) => {
     ctx.stroke();
     fc.forEach((p, h) => { ctx.fillStyle = accent; ctx.beginPath(); ctx.arc(X(N + h), Y(p.y), 2.5, 0, 7); ctx.fill(); });
     // labels
-    ctx.fillStyle = muted; ctx.font = "10px JetBrains Mono, monospace";
+    ctx.fillStyle = muted; ctx.font = "10px Geist Mono, monospace";
     ctx.fillText("PAST 4 WEEKS", padL, Hh - 4);
     ctx.fillText("NEXT 10 DAYS", X(N) , Hh - 4);
     const total = fc.reduce((s, p) => s + p.y, 0);
@@ -497,7 +454,7 @@ $("#contactForm").addEventListener("submit", (e) => {
   try {
     const r = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=pushed&per_page=12`);
     if (!r.ok) throw 0;
-    const repos = (await r.json()).filter((x) => !x.fork && x.name.toLowerCase() !== "shoryajain.com");
+    const repos = (await r.json()).filter((x) => !x.fork && x.size > 10 && x.name.toLowerCase() !== "shoryajain.com");
     $("#pRepos").textContent = repos.length;
     $("#repos").innerHTML = repos.slice(0, 6).map((x) => `
       <li><a href="${x.html_url}" target="_blank" rel="noopener" data-cursor="Open">
