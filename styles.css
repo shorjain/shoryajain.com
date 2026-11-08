@@ -133,6 +133,7 @@ main { padding: 0 var(--pad); }
 .creds li { padding-right: 14px; margin-right: 14px; border-right: 1px solid var(--line); }
 .creds li:last-child { border: 0; }
 .creds b { color: var(--fg); font-weight: 500; margin-right: 6px; }
+.creds .hl { color: var(--accent); }
 .hero-sub { color: var(--muted); max-width: 620px; font-size: 18px; margin: 1.6rem 0 0; }
 .hero-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 2rem; margin-top: 3.5rem; flex-wrap: wrap; }
 .scroll-cue { color: var(--muted); display: flex; align-items: center; gap: 12px; }
