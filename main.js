@@ -511,3 +511,30 @@ $("#contactForm").addEventListener("submit", (e) => {
     hm.outerHTML = `<p class="mono" style="color:var(--muted)">Contribution graph unavailable right now.</p>`;
   }
 })();
+
+/* ============================================================
+   CLEAN URLS — in-page links scroll smoothly but never add
+   "#section" to the address bar, so it always reads shoryajain.com
+   ============================================================ */
+(() => {
+  const clean = () => history.replaceState(null, "", location.pathname + location.search);
+  const go = (id, smooth) => {
+    const behavior = smooth && !reduced ? "smooth" : "auto";
+    const t = id && id !== "top" ? document.getElementById(id) : null;
+    if (t) t.scrollIntoView({ behavior });
+    else window.scrollTo({ top: 0, behavior });
+  };
+  document.addEventListener("click", (e) => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    go(a.getAttribute("href").slice(1), true);
+    clean();
+  });
+  // Old links like shoryajain.com/#work-foreseeer still land in the right place, then tidy the URL.
+  if (location.hash) {
+    const id = decodeURIComponent(location.hash.slice(1));
+    clean();
+    addEventListener("load", () => go(id, false));
+  }
+})();
