@@ -1,0 +1,65 @@
+name: Deploy site
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 * * * *"   # hourly: refresh GitHub contribution data
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch contribution calendar
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh api graphql -f login=shorjain -f query='
+            query($login: String!) {
+              user(login: $login) {
+                contributionsCollection {
+                  contributionCalendar {
+                    totalContributions
+                    weeks { contributionDays { date contributionCount contributionLevel } }
+                  }
+                }
+              }
+            }' > raw.json
+          python3 - <<'PY'
+          import json, datetime
+          cal = json.load(open("raw.json"))["data"]["user"]["contributionsCollection"]["contributionCalendar"]
+          lv = {"NONE": 0, "FIRST_QUARTILE": 1, "SECOND_QUARTILE": 2, "THIRD_QUARTILE": 3, "FOURTH_QUARTILE": 4}
+          days = [{"date": d["date"], "count": d["contributionCount"], "level": lv.get(d["contributionLevel"], 0)}
+                  for w in cal["weeks"] for d in w["contributionDays"]]
+          json.dump({"total": cal["totalContributions"], "updated": datetime.datetime.utcnow().isoformat() + "Z",
+                     "contributions": days}, open("contributions.json", "w"))
+          print("total", cal["totalContributions"], "days", len(days))
+          PY
+          rm raw.json
+
+      - name: Assemble site
+        run: |
+          mkdir _site
+          cp -r index.html styles.css main.js favicon.svg contributions.json CNAME .nojekyll _site/
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4

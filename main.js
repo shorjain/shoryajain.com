@@ -469,9 +469,17 @@ $("#contactForm").addEventListener("submit", (e) => {
   // contribution heatmap
   const hm = $("#heatmap"), tip = $("#heatTip");
   try {
-    const r = await fetch(`https://github-contributions-api.jogruber.de/v4/${GITHUB_USER}?y=last`);
-    if (!r.ok) throw 0;
-    const j = await r.json();
+    // Fresh data published hourly by .github/workflows/deploy.yml; falls back to a public API.
+    let j;
+    try {
+      const r = await fetch(`contributions.json?t=${Date.now()}`, { cache: "no-store" });
+      if (!r.ok) throw 0;
+      j = await r.json();
+    } catch (e) {
+      const r = await fetch(`https://github-contributions-api.jogruber.de/v4/${GITHUB_USER}?y=last`);
+      if (!r.ok) throw 0;
+      j = await r.json();
+    }
     const days = j.contributions || [];
     const total = days.reduce((s, d) => s + d.count, 0);
     // streaks
