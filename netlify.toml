@@ -1,0 +1,7 @@
+[build]
+  publish = "."
+
+[[headers]]
+  for = "/contributions.json"
+  [headers.values]
+    Cache-Control = "no-cache"

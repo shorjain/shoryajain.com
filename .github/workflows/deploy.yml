@@ -1,27 +1,22 @@
-name: Deploy site
+name: Refresh contributions
 
 on:
   push:
     branches: [main]
   schedule:
-    - cron: "17 * * * *"   # hourly: refresh GitHub contribution data
+    - cron: "17 * * * *"   # hourly
   workflow_dispatch:
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+  contents: write
 
 concurrency:
-  group: pages
+  group: contributions
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  refresh:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
 
@@ -41,25 +36,22 @@ jobs:
               }
             }' > raw.json
           python3 - <<'PY'
-          import json, datetime
+          import json
           cal = json.load(open("raw.json"))["data"]["user"]["contributionsCollection"]["contributionCalendar"]
           lv = {"NONE": 0, "FIRST_QUARTILE": 1, "SECOND_QUARTILE": 2, "THIRD_QUARTILE": 3, "FOURTH_QUARTILE": 4}
           days = [{"date": d["date"], "count": d["contributionCount"], "level": lv.get(d["contributionLevel"], 0)}
                   for w in cal["weeks"] for d in w["contributionDays"]]
-          json.dump({"total": cal["totalContributions"], "updated": datetime.datetime.utcnow().isoformat() + "Z",
-                     "contributions": days}, open("contributions.json", "w"))
+          json.dump({"total": cal["totalContributions"], "contributions": days}, open("contributions.json", "w"))
           print("total", cal["totalContributions"], "days", len(days))
           PY
           rm raw.json
 
-      - name: Assemble site
+      # Netlify redeploys on every push, so committing the new data publishes it.
+      - name: Commit if changed
         run: |
-          mkdir _site
-          cp -r index.html styles.css main.js favicon.svg contributions.json .nojekyll _site/
-
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: _site
-      - id: deployment
-        uses: actions/deploy-pages@v4
+          git add contributions.json
+          if git diff --cached --quiet; then echo "no change"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Refresh contributions"
+          git push
